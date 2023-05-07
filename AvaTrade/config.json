@@ -1,0 +1,12 @@
+{
+  "driver": {
+    "browser": "chrome",
+    "browserType": "local",
+    "waitSeconds": 10,
+    "type": "mobile"
+  },
+
+  "test": {
+    "url": "https://www.avatrade.com/?mode=test-static-widget"
+  }
+}
