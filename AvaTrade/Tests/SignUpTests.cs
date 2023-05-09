@@ -1,5 +1,6 @@
 ﻿using AvaTrade.Base;
 using AvaTrade.PageObjects;
+using FluentAssertions;
 using Framework.Selenium;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -11,24 +12,22 @@ using System.Threading.Tasks;
 
 namespace AvaTrade.Tests
 {
+    [Category("SignUp")]
     public class SignUpTests : TestBase
     {
         [Test]
-        [TestCase("Afghanistan", "reutskyitest+15@gmail.com")]
-        [TestCase("France", "reutskyitest+16@gmail.com")]
-        public void Verify_sign_up__completes_successful(string country, string email)
+        [TestCase("Afghanistan")]
+        [TestCase("France")]
+        public void Verify_sign_up_completes_successful(string country)
         {
-            Pages.MainPage.LoginButton.Click();
-            Driver.Wait.Until(drv => Pages.LoginPage.EmailInput.Displayed);
-            Pages.LoginPage.EmailInput.SendKeys(email);
-            Pages.LoginPage.PasswordInput.SendKeys("testTest1");
-            Pages.LoginPage.LoginButton.Click();
+            Random rnd = new Random();
+            int number = rnd.Next(1, 1000);
 
-            //Pages.MainPage.RegisterNowButton.Click();
-            //Driver.Wait.Until(drv => Pages.SignUpPage.EmailInput.Displayed);
-            //Pages.SignUpPage.EmailInput.SendKeys("reutskyitest+11@gmail.com");
-            //Pages.SignUpPage.PasswordInput.SendKeys("testTest1");
-            //Pages.SignUpPage.CreateMyAccountButton.Click();
+            Pages.MainPage.RegisterNowButton.Click();
+            Driver.Wait.Until(drv => Pages.SignUpPage.EmailInput.Displayed);
+            Pages.SignUpPage.EmailInput.SendKeys($"avatradetest+{number}@gmail.com");
+            Pages.SignUpPage.PasswordInput.SendKeys("testTest1");
+            Pages.SignUpPage.CreateMyAccountButton.Click();
 
             Driver.Wait.Until(drv => Pages.SignUpPage.IFrameRegistration.Displayed);
             Pages.SignUpPage.SwitchToRegistrationIFrame();
@@ -62,17 +61,38 @@ namespace AvaTrade.Tests
             }
             catch { }
 
-            try
+            if (country == "Afghanistan")
             {
+                try
+                {
+                    Driver.Wait.Until(drv => Pages.SignUpPage.AccountReadyLabel.Displayed);
+                    Pages.SignUpPage.FundMyAccountButton.Click();
+                }
+                catch { }
+
                 Driver.Wait.Until(drv => Pages.DepositPage.IFrameDeposit.Displayed);
                 Pages.DepositPage.SwitchToDepositIFrame();
-                Assert.True(Pages.DepositPage.ChooseDepositLabel.Displayed);
+                Driver.Wait.Until(drv => Pages.DepositPage.NotificationLabel.Displayed);
             }
-            catch
+            else
             {
                 Driver.Wait.Until(drv => Pages.SignUpPage.CrossButtonOnAlmostThere.Displayed);
                 Pages.SignUpPage.CrossButtonOnAlmostThere.Click();
             }
+        }
+
+        [Test]
+        [TestCase("test@test", "test")]
+        [TestCase("test@.com", "123456")]
+        public void Verify_validation_messages_displayed(string email, string password)
+        {
+            Pages.MainPage.RegisterNowButton.Click();
+            Driver.Wait.Until(drv => Pages.SignUpPage.EmailInput.Displayed);
+            Pages.SignUpPage.EmailInput.SendKeys(email);
+            Pages.SignUpPage.PasswordInput.SendKeys(password);
+
+            Pages.SignUpPage.EmailErrorMessage.Text.Should().Be("Please enter a valid email");
+            Assert.True(Pages.SignUpPage.PasswordMessage.Displayed, "Password rules are not displayed");
         }
     }
 }

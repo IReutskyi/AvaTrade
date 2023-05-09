@@ -17,6 +17,8 @@ namespace AvaTrade.PageObjects
         public Element EmailInput => Driver.FindElement(By.Id("input-email"), "Input email");
         public Element PasswordInput => Driver.FindElement(By.Id("input-password"), "Password email");
         public Element CreateMyAccountButton => Driver.FindElement(By.Id("btn_ga_real_main menu_cfd"), "Create My Account button");
+        public Element EmailErrorMessage => Driver.FindElement(By.XPath("//div[@class='error-message']"), "Email error message");
+        public Element PasswordMessage => Driver.FindElement(By.XPath("//div[@class='password-rules']"), "Email error message");
 
         //Step 2 - Personal Details
         public Element IFrameRegistration => Driver.FindElement(By.XPath("//iframe[contains(@src, 'registration')]"), "IFrame registration");
@@ -283,6 +285,7 @@ namespace AvaTrade.PageObjects
 
         public void AcceptTerms()
         {
+            Thread.Sleep(500);
             TermAndConditionsToggl.Click();
         }
 
@@ -292,5 +295,9 @@ namespace AvaTrade.PageObjects
 
         //Step - Almost there
         public Element CrossButtonOnAlmostThere => Driver.FindElement(By.XPath("//button[@id='btn_skip']"), "Cross button");
+
+        //Step - Account ready
+        public Element AccountReadyLabel => Driver.FindElement(By.XPath("//div[@class='account-ready']"), "Account Ready label");
+        public Element FundMyAccountButton => Driver.FindElement(By.XPath("//button[@id='btn_deposit']"), "Fund My Account button");
     }
 }

@@ -12,6 +12,8 @@ namespace AvaTrade.PageObjects
     {
         public Element IFrameDeposit => Driver.FindElement(By.XPath("//iframe[contains(@src, 'deposit')]"), "IFrame deposit");
         public Element ChooseDepositLabel => Driver.FindElement(By.XPath("//p[text()='Please choose deposit method']"), "Deposit Method Label");
+        public Element CreditDebitCardLabel => Driver.FindElement(By.XPath("//p[text()='Credit and Debit Card']"), "Credit and Debit Card Label");
+        public Element NotificationLabel => Driver.FindElement(By.XPath("//div[@class='dy-deposit-notification']"), "Notification Label");
 
         public void SwitchToDepositIFrame()
         {

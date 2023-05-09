@@ -2,7 +2,7 @@
   "driver": {
     "browser": "chrome",
     "browserType": "local",
-    "waitSeconds": 10,
+    "waitSeconds": 15,
     "type": "mobile"
   },
 
