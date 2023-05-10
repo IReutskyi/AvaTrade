@@ -11,7 +11,7 @@ namespace AvaTradeMobile.PageObjects
 {
     public class MainPage
     {
-        public AndroidElement RegisterNowButton => AndroidDriver.Current.FindElement(By.Id("onboarding_avatrade_email_registration"));
+        public AndroidElement CreateAnAccountButton => AndroidDriver.Current.FindElement(By.Id("onboarding_avatrade_email_registration"));
 
     }
 }
